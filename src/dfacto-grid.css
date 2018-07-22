@@ -1,0 +1,174 @@
+/********************************************
+  Title: dFacto Grid
+  Description: Responsive grid CSS framework
+
+  Author: Cobus Burger 
+*********************************************/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img {
+  align-self: flex-start;
+}
+
+.row {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.row::before,
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+ 
+[class*='-col-'] {
+  padding: 1%;
+  flex: initial;
+  /* margin-right: 1%; */
+  /* float: left; */
+  /* border: solid blue; //used for visual testing */
+}
+
+/* [class*='-col-']:last-of-type {
+  margin-right: 0;
+} */
+/* [class*='-col-']:first-of-type {
+  padding-left: 0;
+} */
+
+@media screen and (min-width: 0px) {
+  
+  .xs-col-1 {width: 8.333%;}
+  .xs-col-2 {width: calc(8.333% * 2);}
+  .xs-col-3 {width: calc(8.333% * 3);}
+  .xs-col-4 {width: calc(8.333% * 3);}
+  .xs-col-4 {width: calc(8.333% * 4);}
+  .xs-col-5 {width: calc(8.333% * 5);}
+  .xs-col-6 {width: calc(8.333% * 6);}
+  .xs-col-7 {width: calc(8.333% * 7);}
+  .xs-col-8 {width: calc(8.333% * 8);}
+  .xs-col-9 {width: calc(8.333% * 9);}
+  .xs-col-10 {width: calc(8.333% * 10);}
+  .xs-col-11 {width: calc(8.333% * 11);}
+  .xs-col-12 {width: calc(8.333% * 12);}
+
+  .xs-align-left {text-align: left;}
+  .xs-align-center {text-align: center;}
+  .xs-align-right {text-align: right;}
+
+  .xs-display-none {display: none;}
+
+  .xs-font-25 {font-size: 0.25em;}
+  .xs-font-50 {font-size: 0.50em;}
+  .xs-font-75 {font-size: 0.75em;}
+  .xs-font-100 {font-size: 1em;}
+  .xs-font-125 {font-size: 1.25em;}
+  .xs-font-150 {font-size: 1.50em;}
+  .xs-font-175 {font-size: 1.75em;}
+  .xs-font-200 {font-size: 2em;}
+}
+
+@media screen and (min-width: 768px) {
+  
+  .sm-col-1 {width: 8.333%;}
+  .sm-col-2 {width: calc(8.333% * 2);}
+  .sm-col-3 {width: calc(8.333% * 3);}
+  .sm-col-4 {width: calc(8.333% * 3);}
+  .sm-col-4 {width: calc(8.333% * 4);}
+  .sm-col-5 {width: calc(8.333% * 5);}
+  .sm-col-6 {width: calc(8.333% * 6);}
+  .sm-col-7 {width: calc(8.333% * 7);}
+  .sm-col-8 {width: calc(8.333% * 8);}
+  .sm-col-9 {width: calc(8.333% * 9);}
+  .sm-col-10 {width: calc(8.333% * 10);}
+  .sm-col-11 {width: calc(8.333% * 11);}
+  .sm-col-12 {width: calc(8.333% * 12);}
+
+  .sm-align-left {text-align: left;}
+  .sm-align-center {text-align: center;}
+  .sm-align-right {text-align: right;}
+
+  .sm-display-none {display: none;}
+
+  .sm-font-25 {font-size: 0.25em;}
+  .sm-font-50 {font-size: 0.50em;}
+  .sm-font-75 {font-size: 0.75em;}
+  .sm-font-100 {font-size: 1em;}
+  .sm-font-125 {font-size: 1.25em;}
+  .sm-font-150 {font-size: 1.50em;}
+  .sm-font-175 {font-size: 1.75em;}
+  .sm-font-200 {font-size: 2em;}
+}
+
+@media screen and (min-width: 992px) {
+  
+  .md-col-1 {width: 8.333%;}
+  .md-col-2 {width: calc(8.333% * 2);}
+  .md-col-3 {width: calc(8.333% * 3);}
+  .md-col-4 {width: calc(8.333% * 3);}
+  .md-col-4 {width: calc(8.333% * 4);}
+  .md-col-5 {width: calc(8.333% * 5);}
+  .md-col-6 {width: calc(8.333% * 6);}
+  .md-col-7 {width: calc(8.333% * 7);}
+  .md-col-8 {width: calc(8.333% * 8);}
+  .md-col-9 {width: calc(8.333% * 9);}
+  .md-col-10 {width: calc(8.333% * 10);}
+  .md-col-11 {width: calc(8.333% * 11);}
+  .md-col-12 {width: calc(8.333% * 12);}
+
+  .md-align-left {text-align: left;}
+  .md-align-center {text-align: center;}
+  .md-align-right {text-align: right;}
+
+  .md-display-none {display: none;}
+
+  .md-font-25 {font-size: 0.25em;}
+  .md-font-50 {font-size: 0.50em;}
+  .md-font-75 {font-size: 0.75em;}
+  .md-font-100 {font-size: 1em;}
+  .md-font-125 {font-size: 1.25em;}
+  .md-font-150 {font-size: 1.50em;}
+  .md-font-175 {font-size: 1.75em;}
+  .md-font-200 {font-size: 2em;}
+}
+
+@media screen and (min-width: 1200px) {
+  
+  .lg-col-1 {width: 8.333%;}
+  .lg-col-2 {width: calc(8.333% * 2);}
+  .lg-col-3 {width: calc(8.333% * 3);}
+  .lg-col-4 {width: calc(8.333% * 3);}
+  .lg-col-4 {width: calc(8.333% * 4);}
+  .lg-col-5 {width: calc(8.333% * 5);}
+  .lg-col-6 {width: calc(8.333% * 6);}
+  .lg-col-7 {width: calc(8.333% * 7);}
+  .lg-col-8 {width: calc(8.333% * 8);}
+  .lg-col-9 {width: calc(8.333% * 9);}
+  .lg-col-10 {width: calc(8.333% * 10);}
+  .lg-col-11 {width: calc(8.333% * 11);}
+  .lg-col-12 {width: calc(8.333% * 12);}
+
+  .lg-align-left {text-align: left;}
+  .lg-align-center {text-align: center;}
+  .lg-align-right {text-align: right;}
+
+  .lg-display-none {display: none;}
+
+  .lg-font-25 {font-size: 0.25em;}
+  .lg-font-50 {font-size: 0.50em;}
+  .lg-font-75 {font-size: 0.75em;}
+  .lg-font-100 {font-size: 1em;}
+  .lg-font-125 {font-size: 1.25em;}
+  .lg-font-150 {font-size: 1.50em;}
+  .lg-font-175 {font-size: 1.75em;}
+  .lg-font-200 {font-size: 2em;}
+}
