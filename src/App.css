@@ -1,13 +1,15 @@
-html {
-  height: 100%;
-}
-
-body {
-  color: orange;
-  font-family: 'Titillium Web', sans-serif;
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+
+  color: orange;
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.content {
+  height: calc(100% - 85px); 
+  position: relative;
 }
 
 .header {
@@ -22,13 +24,40 @@ body {
 }
 
 .menu {
-  height: calc(100% - 85px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 200px;
   background-color: rgb(91, 100, 131);
   box-shadow: inset 0px 10px 10px 0 rgb(0,0,0,0.1), 
               5px 0px 20px 0 rgb(0,0,0,0.2),
               inset 0px -10px 10px 0 rgb(0,0,0,0.1);
   
+}
+
+@keyframes menu--slide {
+  from {  
+    width: 40px;
+    height: 40px;
+  }
+  to { 
+    width: 200px; 
+    height: 100%; 
+  }
+}
+
+.menu--open {
+  animation: menu--slide 0.3s;
+}
+.menu--close {
+  animation: menu--slide 0.3s reverse forwards;
+}
+
+.map {
+  text-align: center;
+  height: 100%;
+  width: 100%;
 }
 
 .footer {
