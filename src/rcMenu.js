@@ -6,13 +6,37 @@ class Menu extends Component {
 
     this.state = {
       isClosed : false
-    }
+    };
+
+  };
+
+  toggleMenu = (e) => { 
+    this.setState(
+      (state) => {
+        return {isClosed: !state.isClosed}
+      }
+    );
   };
 
   render() {
+    let buttonText, toggleClass;
+
+    if (this.state.isClosed) {
+      buttonText = ">";
+      toggleClass = 'menu menu--close';
+    }
+    else {
+      buttonText = "<";
+      toggleClass = 'menu menu--open';
+    }
+
     return (
-      <div className='menu menu--open'>
-        <button onClick="{this.toggleMenu}">&lt;</button>
+      <div className={toggleClass}>
+        <button 
+          onClick={this.toggleMenu}
+          className='menu__toggle'
+          >{buttonText}
+        </button>
       </div>
     );
   }

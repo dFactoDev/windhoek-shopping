@@ -33,25 +33,21 @@ html, body {
   box-shadow: inset 0px 10px 10px 0 rgb(0,0,0,0.1), 
               5px 0px 20px 0 rgb(0,0,0,0.2),
               inset 0px -10px 10px 0 rgb(0,0,0,0.1);
+  transition-duration: 0.3s;
   
 }
 
-@keyframes menu--slide {
-  from {  
-    width: 40px;
-    height: 40px;
-  }
-  to { 
-    width: 200px; 
-    height: 100%; 
-  }
-}
-
 .menu--open {
-  animation: menu--slide 0.3s;
+  width: 200px;
 }
 .menu--close {
-  animation: menu--slide 0.3s reverse forwards;
+  width: 50px;
+}
+
+.menu__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .map {
