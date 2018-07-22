@@ -48,6 +48,8 @@ html, body {
   position: absolute;
   top: 0;
   right: 0;
+  padding: 5px 5px;
+  font-size: 1.5em;
 }
 
 .map {
