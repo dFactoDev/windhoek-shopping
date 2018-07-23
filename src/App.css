@@ -42,7 +42,8 @@ html, body {
   width: 200px;
 }
 .menu--close {
-  width: 50px;
+  width: 30px;
+  height: 35px;
 }
 
 .menu__toggle {
@@ -56,6 +57,9 @@ html, body {
 .menu__selector {
   padding: 3px;
   width: 100%;
+  background-color: gray;
+  color: white;
+  font-weight: 900;
 }
 
 .map {

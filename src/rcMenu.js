@@ -20,27 +20,32 @@ class Menu extends Component {
   };
 
   render() {
-    let toggleClass, buttonClass;
 
     if (this.state.isClosed) {
-      buttonClass = "menu__toggle fas fa-caret-right";
-      toggleClass = 'menu menu--close';
+      return (
+        <div className="menu menu--close">
+          <span
+            onClick={this.toggleMenu}
+            className="menu__toggle fas fa-bars"
+            >
+          </span>
+        </div>
+      );
     }
     else {
-      buttonClass = 'menu__toggle fas fa-caret-left';
-      toggleClass = 'menu menu--open';
+      return (
+        <div className="menu menu--open">
+          <span
+            onClick={this.toggleMenu}
+            className="menu__toggle fas fa-caret-left"
+            >
+          </span>
+          <CategoryFilter />
+        </div>
+      );
     }
 
-    return (
-      <div className={toggleClass}>
-        <span
-          onClick={this.toggleMenu}
-          className={buttonClass}
-          >
-        </span>
-        <CategoryFilter />
-      </div>
-    );
+
   }
 
 }
