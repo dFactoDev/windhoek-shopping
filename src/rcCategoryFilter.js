@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export function CategoryFilter ({categories}) {
+function CategoryFilter ({categories}) {
   let categoryIDs = Object.getOwnPropertyNames(categories);
   return (
     <select className="menu__selector">
@@ -11,7 +11,8 @@ export function CategoryFilter ({categories}) {
             return (
               <option key={id}>{categories[id]}</option>
             );
-          })
+          }
+        )
       }
     </select>
   );
@@ -20,3 +21,5 @@ export function CategoryFilter ({categories}) {
 CategoryFilter.propTypes = {
   categories: PropTypes.object.isRequired
 }
+
+export default CategoryFilter;

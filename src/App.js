@@ -12,6 +12,11 @@ class App extends Component {
         'id1': 'cafes',
         'id2': 'restaurants',
         'id3': 'coffe'
+      },
+      locations: {
+        'id1': 'Cafe1',
+        'id2': 'Restaurant2',
+        'id3': 'Coffe Shop'
       }
     }
   }
@@ -19,7 +24,10 @@ class App extends Component {
   render() {
     return (
       <div className="row">
-        <Menu categories={this.state.categories}/>
+        <Menu 
+          categories={this.state.categories} 
+          locations={this.state.locations}
+        />
         <Map />
       </div>
     );

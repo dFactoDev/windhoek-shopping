@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { CategoryFilter } from './rcCategoryFilter';
+import CategoryFilter from './rcCategoryFilter';
+import LocationList from './rcLocationList';
 
 class Menu extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class Menu extends Component {
             >
           </span>
           <CategoryFilter categories={this.props.categories}/>
+          <LocationList locations={this.props.locations}/>
         </div>
       );
     }
