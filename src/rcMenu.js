@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CategoryFilter } from './rcStatelessComponents';
+import { CategoryFilter } from './rcCategoryFilter';
 
 class Menu extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Menu extends Component {
             className="menu__toggle fas fa-caret-left"
             >
           </span>
-          <CategoryFilter />
+          <CategoryFilter categories={this.props.categories}/>
         </div>
       );
     }
