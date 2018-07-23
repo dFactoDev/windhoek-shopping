@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CategoryFilter } from './rcStatelessComponents';
 
 class Menu extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class Menu extends Component {
           className={buttonClass}
           >
         </span>
+        <CategoryFilter />
       </div>
     );
   }
