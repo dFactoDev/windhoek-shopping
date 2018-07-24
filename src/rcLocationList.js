@@ -2,15 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function LocationList({locations}) {
-  let locationIDs = Object.getOwnPropertyNames(locations);
   return (
     <ul className="locations">
       {
-        locationIDs.map( 
-          (id) => {
+        locations.map( 
+          (location) => {
             return (
-              <li key={id} className="locations__item">
-                {locations[id]}
+              <li key={location.id} className="locations__item">
+                {location.name}
               </li>
             );
           }
@@ -21,7 +20,7 @@ function LocationList({locations}) {
 }
 
 LocationList.propTypes = {
-  locations: PropTypes.object.isRequired
+  locations: PropTypes.array.isRequired
 };
 
 export default LocationList;

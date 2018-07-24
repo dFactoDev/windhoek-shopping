@@ -10,21 +10,25 @@ class App extends Component {
 
     this.state = {
       categories: {
-        'id1': 'cafes',
-        'id2': 'restaurants',
-        'id3': 'coffe'
+        '4bf58dd8d48988d127951735': 'Arts & Crafts',
+        '52f2ab2ebcbc57f1066b8b32': 'Baby',
+        '4bf58dd8d48988d114951735': 'Books',
+        '4bf58dd8d48988d103951735': 'Clothing',
+        '4bf58dd8d48988d10c951735': 'Cosmetics',
+        '4bf58dd8d48988d122951735': 'Electronics',
+        '4bf58dd8d48988d1f8941735': 'Furniture & Home',
+        '52f2ab2ebcbc57f1066b8b1b': 'Souvenirs',
+        '4bf58dd8d48988d1fd941735': 'Malls'
       },
-      locations: {
-        'id1': 'Cafe1',
-        'id2': 'Restaurant2',
-        'id3': 'Coffe Shop'
-      }
+      locations: []
     }
   }
   
   componentDidMount() {
-    fetchPlaces(['4bf58dd8d48988d127951735', '52f2ab2ebcbc57f1066b8b32' ]).then(
-      (json) => console.log(json)
+    fetchPlaces(Object.keys(this.state.categories)).then(
+      (places) => {
+        this.setState( {locations: places})
+      }
     )
   }
 
