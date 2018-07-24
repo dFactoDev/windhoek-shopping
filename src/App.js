@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Menu from './rcMenu';
 import Map from './rcMap';
+import { fetchPlaces } from './auxFunctions';
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +22,12 @@ class App extends Component {
     }
   }
   
+  componentDidMount() {
+    fetchPlaces(['4bf58dd8d48988d127951735', '52f2ab2ebcbc57f1066b8b32' ]).then(
+      (json) => console.log(json)
+    )
+  }
+
   render() {
     return (
       <div className="row">
