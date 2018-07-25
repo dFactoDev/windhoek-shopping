@@ -20,16 +20,21 @@ class App extends Component {
         '52f2ab2ebcbc57f1066b8b1b': 'Souvenirs',
         '4bf58dd8d48988d1fd941735': 'Malls'
       },
-      locations: []
+      locations: [],
+      statusMenuLoad: 0,
+      statusMapLoad: 0
     }
   }
   
   componentDidMount() {
-    fetchPlaces(Object.keys(this.state.categories)).then(
-      (places) => {
-        this.setState( {locations: places})
-      }
-    )
+    this.setState ( {statusMenuLoad: 0});
+    fetchPlaces(Object.keys(this.state.categories))
+      .then( (places) => {
+        this.setState( {locations: places, statusMenuLoad: 1})
+      })
+      .catch( (err) => {
+        this.setState( {statusMenuLoad: 2})
+      });
   }
 
   render() {
@@ -38,8 +43,9 @@ class App extends Component {
         <Menu 
           categories={this.state.categories} 
           locations={this.state.locations}
+          statusMenuLoad={this.state.statusMenuLoad}
         />
-        <Map />
+        <Map statusMapLoad={this.state.statusMapLoad}/>
       </div>
     );
   }

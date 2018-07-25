@@ -34,6 +34,24 @@ class Menu extends Component {
       );
     }
     else {
+      
+      let menuContent;
+      
+      switch(this.props.statusMenuLoad) {
+        case 0: 
+          menuContent = <div> Loading, please wait...</div>
+          break;
+        case 1:
+          menuContent = 
+            <div>
+              <CategoryFilter categories={this.props.categories}/> 
+              <LocationList locations={this.props.locations}/>
+            </div>
+          break;
+        case 2:
+          menuContent = <div> Error loading. Please refresh.</div>
+          break;
+      }
       return (
         <div className="menu menu--open">
           <span
@@ -41,8 +59,7 @@ class Menu extends Component {
             className="menu__toggle fas fa-caret-left"
             >
           </span>
-          <CategoryFilter categories={this.props.categories}/>
-          <LocationList locations={this.props.locations}/>
+          {menuContent}
         </div>
       );
     }
