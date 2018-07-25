@@ -21,7 +21,6 @@ class Menu extends Component {
   };
 
   render() {
-
     if (this.state.isClosed) {
       return (
         <div className="menu menu--close">
@@ -45,7 +44,7 @@ class Menu extends Component {
           menuContent = 
             <div>
               <CategoryFilter categories={this.props.categories}/> 
-              <LocationList locations={this.props.locations}/>
+              <LocationList filteredLocations={this.props.filteredLocations}/>
             </div>
           break;
         case 2:
@@ -59,7 +58,7 @@ class Menu extends Component {
             className="menu__toggle fas fa-caret-left"
             >
           </span>
-          {menuContent}
+            {menuContent}
         </div>
       );
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Menu from './rcMenu';
 import Map from './rcMap';
-import { fetchPlaces } from './auxFunctions';
+import { fetchPlaces, venuesArrToObj } from './auxFunctions';
 
 class App extends Component {
   constructor(props) {
@@ -21,18 +21,40 @@ class App extends Component {
         '4bf58dd8d48988d1fd941735': 'Malls'
       },
       locations: [],
+      filteredLocations: [],
       statusMenuLoad: 0,
       statusMapLoad: 0
     }
   }
   
+  filterLocations = (filterId, locations) => {
+    
+    if (filterId === '0') return locations;
+
+    let filtered = {};
+
+    for (let id in locations) {
+      if (filterId === locations[id].categories[0].id) {
+        filtered = Object.assign(filtered, locations[id])
+      }
+    }
+
+    return filtered;
+  }
+
   componentDidMount() {
     this.setState ( {statusMenuLoad: 0});
     fetchPlaces(Object.keys(this.state.categories))
       .then( (places) => {
-        this.setState( {locations: places, statusMenuLoad: 1})
+        const locations = venuesArrToObj(places);
+        this.setState( {
+          locations: locations,
+          filteredLocations: locations,
+          statusMenuLoad: 1
+        });
       })
       .catch( (err) => {
+        
         this.setState( {statusMenuLoad: 2})
       });
   }
@@ -42,7 +64,7 @@ class App extends Component {
       <div className="row">
         <Menu 
           categories={this.state.categories} 
-          locations={this.state.locations}
+          filteredLocations={this.state.filteredLocations}
           statusMenuLoad={this.state.statusMenuLoad}
         />
         <Map statusMapLoad={this.state.statusMapLoad}/>

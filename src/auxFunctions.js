@@ -33,7 +33,31 @@ export function fetchPlaces(categoryIDs) {
 
 }
 
+export function venuesArrToObj(venuesArray) {
+  // returns fetched FourSquare data array to object 
 
+  let venuesObj = {};
+
+  for (let venue of venuesArray){
+    try {
+      venuesObj[venue.id] = {
+        name: venue.name,
+        address: venue.location.address,
+        city: venue.location.city,
+        country: venue.location.country,
+        lat: venue.lat,
+        lng: venue.lng,
+        categoryId: venue.categories[0].id
+      }
+    }
+    catch(err) {
+      // if exception due to incomplete info, ignore and continue
+      continue;
+    }
+  };
+
+  return venuesObj;
+}
 
 
 

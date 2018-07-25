@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LocationList({locations}) {
+function LocationList({filteredLocations}) {
   return (
     <ul className="locations">
       {
-        locations.map( 
-          (location) => {
+        Object.keys(filteredLocations).map( 
+          (locationId) => {
             return (
-              <li key={location.id} className="locations__item">
-                {location.name}
+              <li 
+                key={locationId} 
+                value={locationId}
+                className="locations__item">
+
+                {filteredLocations[locationId].name}
               </li>
             );
           }
@@ -20,7 +24,7 @@ function LocationList({locations}) {
 }
 
 LocationList.propTypes = {
-  locations: PropTypes.array.isRequired
+  filteredLocations: PropTypes.array.isRequired
 };
 
 export default LocationList;

@@ -9,7 +9,7 @@ function CategoryFilter ({categories}) {
         categoryIDs.map(
           (id) => {
             return (
-              <option key={id}>{categories[id]}</option>
+              <option key={id} value={id}>{categories[id]}</option>
             );
           }
         )
