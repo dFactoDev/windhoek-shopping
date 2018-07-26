@@ -6,7 +6,7 @@ class CategoryFilter extends Component {
   constructor(props) {
     super(props);
 
-    props.renderFiltered();
+    props.changeFilter();
 
   }
 
@@ -14,9 +14,13 @@ class CategoryFilter extends Component {
   
   render () {
     return (
-      <select className="menu__selector" onChange={(e) => {
-        this.props.renderFiltered(e.target.value);
-      }}>
+      <select 
+        className="menu__selector" 
+        onChange={(e) => {
+          this.props.changeFilter(e.target.value);
+        }}
+        value={this.props.currentFilter}>
+        <option key='0' value='0'>All</option>
         {
           this.categoryIDs.map(
             (id) => {

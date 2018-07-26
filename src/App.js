@@ -21,7 +21,8 @@ class App extends Component {
       locations: {},
       filteredLocations: {},
       statusMenuLoad: 0,
-      statusMapLoad: 0
+      statusMapLoad: 0,
+      currentFilter: ''
     }
   }
   
@@ -30,7 +31,7 @@ class App extends Component {
     let locations = this.state.locations;
     let filtered = {};
 
-    if(!categoryId) {
+    if(!categoryId || categoryId === '0') {
       filtered = Object.assign(filtered, locations);
     }
     else {
@@ -43,10 +44,13 @@ class App extends Component {
     return filtered;
   }
 
-  renderFiltered = (categoryId) => {
+  changeFilter = (categoryId) => {
 
     let newState = this.filterLocations(categoryId);
-    this.setState({ filteredLocations: newState});
+    this.setState({ 
+      filteredLocations: newState,
+      currentFilter: categoryId
+    });
   }
 
   componentDidMount() {
@@ -68,7 +72,8 @@ class App extends Component {
           categories={this.state.categories} 
           filteredLocations={this.state.filteredLocations}
           statusMenuLoad={this.state.statusMenuLoad}
-          renderFiltered={this.renderFiltered}
+          changeFilter={this.changeFilter}
+          currentFilter={this.state.currentFilter}
         />
         <Map statusMapLoad={this.state.statusMapLoad}/>
       </div>

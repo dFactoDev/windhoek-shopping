@@ -16,6 +16,10 @@ class Menu extends Component {
     this.setState(
       (state) => {
         return {isClosed: !state.isClosed}
+      },
+      () => {
+        // ensures that when menu opened, location list is filtered again according to current category selection
+        this.props.changeFilter(this.props.currentFilter);
       }
     );
   };
@@ -45,7 +49,8 @@ class Menu extends Component {
             <div>
               <CategoryFilter 
                 categories={this.props.categories} 
-                renderFiltered={this.props.renderFiltered}/> 
+                changeFilter={this.props.changeFilter}
+                currentFilter={this.props.currentFilter}/> 
               <LocationList filteredLocations={this.props.filteredLocations}/>
             </div>
           break;
