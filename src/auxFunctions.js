@@ -11,7 +11,7 @@ export function fetchPlaces(categoryIDs) {
     client_secret: constants.fourSqrSecret,
     ll: constants.mapCenterLat + ',' + constants.mapCenterLng,
     intent: 'browse',
-    radius: '4000',
+    radius: constants.searchRadius,
     limit: constants.fourSqrLimit,
     v: todayDate.getFullYear().toString() + '1231',
     categoryId: categoriesString

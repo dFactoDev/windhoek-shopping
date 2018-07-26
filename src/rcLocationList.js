@@ -24,7 +24,7 @@ function LocationList({filteredLocations}) {
 }
 
 LocationList.propTypes = {
-  filteredLocations: PropTypes.array.isRequired
+  filteredLocations: PropTypes.object.isRequired
 };
 
 export default LocationList;

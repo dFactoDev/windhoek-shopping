@@ -5,3 +5,4 @@ export const mapCenterLat = "-22.5672463";
 export const mapCenterLng = "17.085135";
 export const fourSqrLimit = "40";
 export const fourSqrUrl = "https://api.foursquare.com/v2/venues/search?";
+export const searchRadius = "5000";

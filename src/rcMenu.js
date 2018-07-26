@@ -43,7 +43,9 @@ class Menu extends Component {
         case 1:
           menuContent = 
             <div>
-              <CategoryFilter categories={this.props.categories}/> 
+              <CategoryFilter 
+                categories={this.props.categories} 
+                renderFiltered={this.props.renderFiltered}/> 
               <LocationList filteredLocations={this.props.filteredLocations}/>
             </div>
           break;
