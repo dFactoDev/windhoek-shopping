@@ -16,15 +16,21 @@ class Menu extends Component {
     this.setState(
       (state) => {
         return {isClosed: !state.isClosed}
-      },
-      () => {
-        // ensures that when menu opened, location list is filtered again according to current category selection
-        this.props.changeFilter(this.props.currentFilter);
       }
     );
   };
 
   render() {
+    
+    let menuContent = 
+      <div>
+        <CategoryFilter 
+          categories={this.props.categories} 
+          changeFilter={this.props.changeFilter}
+          currentFilter={this.props.currentFilter}/> 
+        <LocationList filteredLocations={this.props.filteredLocations}/>
+      </div>;
+    
     if (this.state.isClosed) {
       return (
         <div className="menu menu--close">
@@ -33,29 +39,20 @@ class Menu extends Component {
             className="menu__toggle fas fa-bars"
             >
           </span>
+          {menuContent}
         </div>
       );
     }
     else {
-      
-      let menuContent;
-      
+           
       switch(this.props.statusMenuLoad) {
-        case 0: 
+        case 1: 
           menuContent = <div> Loading, please wait...</div>
-          break;
-        case 1:
-          menuContent = 
-            <div>
-              <CategoryFilter 
-                categories={this.props.categories} 
-                changeFilter={this.props.changeFilter}
-                currentFilter={this.props.currentFilter}/> 
-              <LocationList filteredLocations={this.props.filteredLocations}/>
-            </div>
           break;
         case 2:
           menuContent = <div> Error loading. Please refresh.</div>
+          break;
+        default:
           break;
       }
       return (

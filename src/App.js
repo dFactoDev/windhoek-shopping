@@ -54,11 +54,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState ( {statusMenuLoad: 0});
+    this.setState ( {statusMenuLoad: 1});
     fetchPlaces(Object.keys(this.state.categories))
       .then( (places) => {
         const locations = venuesArrToObj(places);
-        this.setState( { locations: locations, statusMenuLoad: 1 });
+        this.setState( { locations: locations, statusMenuLoad: 0 });
       })
       .catch( (err) => {
         this.setState( {statusMenuLoad: 2})

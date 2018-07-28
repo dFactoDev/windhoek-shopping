@@ -47,6 +47,9 @@ html, body {
   width: 30px;
   height: 35px;
 }
+.menu--close div {
+  display: none;
+}
 
 .menu__toggle {
   position: absolute;
