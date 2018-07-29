@@ -21,7 +21,6 @@ class App extends Component {
       locations: {},
       filteredLocations: {},
       statusMenuLoad: 0,
-      statusMapLoad: 0,
       currentFilter: ''
     }
   }
@@ -68,7 +67,10 @@ class App extends Component {
   render() {
     return (
       <div className="row">
-        <Map statusMapLoad={this.state.statusMapLoad}/>
+        <Map 
+          filteredLocations={this.state.filteredLocations}
+          locations={this.state.locations}
+        />
         <Menu 
           categories={this.state.categories} 
           filteredLocations={this.state.filteredLocations}

@@ -45,8 +45,8 @@ export function venuesArrToObj(venuesArray) {
         address: venue.location.address,
         city: venue.location.city,
         country: venue.location.country,
-        lat: venue.lat,
-        lng: venue.lng,
+        lat: venue.location.lat,
+        lng: venue.location.lng,
         categoryId: venue.categories[0].id
       }
     }

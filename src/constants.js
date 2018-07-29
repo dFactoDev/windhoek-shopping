@@ -9,5 +9,5 @@ export const searchRadius = "5000";
 // Map 
 export const mapCenterLat = -22.6164873;
 export const mapCenterLng = 17.0783053;
-export const mapInitZoom = 14;
+export const mapInitZoom = 13;
 export const mapType = 'roadmap';
