@@ -22,7 +22,8 @@ class App extends Component {
       filteredLocations: {},
       statusMenuLoad: 0,
       currentFilter: '',
-      currentLocation: ''
+      currentLocation: '',
+      previousLocation: ''
     }
   }
   
@@ -48,13 +49,19 @@ class App extends Component {
 
     let newState = this.filterLocations(categoryId);
     this.setState({ 
-      filteredLocations: newState,
-      currentFilter: categoryId
-    });
+        filteredLocations: newState,
+        currentFilter: categoryId
+      }
+    );
   }
 
   changeLocation = (locationId) => {
-    this.setState( {currentLocation: locationId} );
+    this.setState( (state) => {
+      return {
+        currentLocation: locationId,
+        previousLocation: state.currentLocation
+      };
+    });
   }
 
   componentDidMount() {
@@ -76,6 +83,7 @@ class App extends Component {
           filteredLocations={this.state.filteredLocations}
           locations={this.state.locations}
           currentLocation={this.state.currentLocation}
+          previousLocation={this.state.previousLocation}
           changeLocation={this.changeLocation}
         />
         <Menu 

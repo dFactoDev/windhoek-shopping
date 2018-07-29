@@ -48,13 +48,15 @@ class Map extends Component {
             lat: currentLocation.lat,
             lng: currentLocation.lng
           },
-          title: currentLocation.name,
-          customLocationId: locationId
+          title: currentLocation.name
         });
+        currentMarker.addListener('click', () => {
+          this.props.changeLocation(locationId);
+        });
+        currentMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
         locations[locationId].googleMapMarker = currentMarker;
       }
     );
-    console.log(locations);
     return locations;
   }
 
@@ -87,6 +89,17 @@ class Map extends Component {
           );
       }
     }
+
+    if(this.props.previousLocation !== nextProps.previousLocation) {
+      this.locationsWithMarkers[nextProps.previousLocation].googleMapMarker
+      .setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+    }
+
+    if(this.props.currentLocation !== nextProps.currentLocation) {
+      this.locationsWithMarkers[nextProps.currentLocation].googleMapMarker
+      .setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+    }
+
     return false;
   }
 
