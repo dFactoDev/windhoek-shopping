@@ -21,7 +21,8 @@ class App extends Component {
       locations: {},
       filteredLocations: {},
       statusMenuLoad: 0,
-      currentFilter: ''
+      currentFilter: '',
+      currentLocation: ''
     }
   }
   
@@ -52,6 +53,10 @@ class App extends Component {
     });
   }
 
+  changeLocation = (locationId) => {
+    this.setState( {currentLocation: locationId} );
+  }
+
   componentDidMount() {
     this.setState ( {statusMenuLoad: 1});
     fetchPlaces(Object.keys(this.state.categories))
@@ -70,6 +75,8 @@ class App extends Component {
         <Map 
           filteredLocations={this.state.filteredLocations}
           locations={this.state.locations}
+          currentLocation={this.state.currentLocation}
+          changeLocation={this.changeLocation}
         />
         <Menu 
           categories={this.state.categories} 
@@ -77,8 +84,9 @@ class App extends Component {
           statusMenuLoad={this.state.statusMenuLoad}
           changeFilter={this.changeFilter}
           currentFilter={this.state.currentFilter}
+          currentLocation={this.state.currentLocation}
+          changeLocation={this.changeLocation}
         />
-
       </div>
     );
   }

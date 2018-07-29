@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LocationList({filteredLocations}) {
+function LocationList({filteredLocations, currentLocation, changeLocation}) {
   return (
     <ul className="locations">
       {
         Object.keys(filteredLocations).map( 
           (locationId) => {
+
+            let className;
+            locationId === currentLocation 
+            ? className = 'locations__item locations__item--selected'
+            : className = 'locations__item'
+
             return (
               <li 
                 key={locationId} 
                 value={locationId}
-                className="locations__item">
-
+                className={className}
+                onClick={() => changeLocation(locationId) }>
                 {filteredLocations[locationId].name}
               </li>
             );

@@ -48,7 +48,8 @@ class Map extends Component {
             lat: currentLocation.lat,
             lng: currentLocation.lng
           },
-          title: currentLocation.name
+          title: currentLocation.name,
+          customLocationId: locationId
         });
         locations[locationId].googleMapMarker = currentMarker;
       }
@@ -76,16 +77,16 @@ class Map extends Component {
       this.locationsWithMarkers = this.initMarkers(nextProps.locations);
     }
 
-    if(this.locationsWithMarkers && nextProps.filteredLocations) {
-      this.clearAllMarkers(this.locationsWithMarkers);
-      this.addFilteredMarkers(
-          this.locationsWithMarkers, 
-          nextProps.filteredLocations,
-          this.googleMap
-        );
-
+    if(this.props.filteredLocations !== nextProps.filteredLocations) {
+      if(this.locationsWithMarkers) {
+        this.clearAllMarkers(this.locationsWithMarkers);
+        this.addFilteredMarkers(
+            this.locationsWithMarkers, 
+            nextProps.filteredLocations,
+            this.googleMap
+          );
+      }
     }
-
     return false;
   }
 

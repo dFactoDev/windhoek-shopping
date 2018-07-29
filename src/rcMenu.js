@@ -28,7 +28,10 @@ class Menu extends Component {
           categories={this.props.categories} 
           changeFilter={this.props.changeFilter}
           currentFilter={this.props.currentFilter}/> 
-        <LocationList filteredLocations={this.props.filteredLocations}/>
+        <LocationList 
+          filteredLocations={this.props.filteredLocations}
+          currentLocation={this.props.currentLocation}
+          changeLocation={this.props.changeLocation}/>
       </div>;
     
     if (this.state.isClosed) {

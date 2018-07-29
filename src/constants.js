@@ -7,7 +7,7 @@ export const fourSqrUrl = "https://api.foursquare.com/v2/venues/search?";
 export const searchRadius = "5000";
 
 // Map 
-export const mapCenterLat = -22.6164873;
-export const mapCenterLng = 17.0783053;
+export const mapCenterLat = -22.588409;
+export const mapCenterLng = 17.080242;
 export const mapInitZoom = 13;
 export const mapType = 'roadmap';
