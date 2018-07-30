@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Menu from './rcMenu';
 import Map from './rcMap';
-import { fetchPlaces, venuesArrToObj } from './auxFunctions';
+import * as auxFunc from './auxFunctions';
 
 class App extends Component {
   constructor(props) {
@@ -11,12 +11,15 @@ class App extends Component {
     this.state = {
       categories: {
         '4bf58dd8d48988d127951735': 'Arts & Crafts',
-        '4bf58dd8d48988d114951735': 'Books',
         '4bf58dd8d48988d103951735': 'Clothing',
         '4bf58dd8d48988d10c951735': 'Cosmetics',
-        '4bf58dd8d48988d122951735': 'Electronics',
         '4bf58dd8d48988d1f8941735': 'Furniture & Home',
-        '4bf58dd8d48988d1fd941735': 'Malls'
+        '4bf58dd8d48988d1fd941735': 'Malls',
+        '4bf58dd8d48988d118951735': 'Groceries',
+        '4bf58dd8d48988d186941735': 'Liquor',
+        '4f04afc02fb6e1c99f3db0bc': 'Mobile Phones',
+        '4bf58dd8d48988d10f951735': 'Pharmacy',
+        '4bf58dd8d48988d1ff941735': 'Miscellaneous'
       },
       locations: {},
       filteredLocations: {},
@@ -66,14 +69,19 @@ class App extends Component {
 
   componentDidMount() {
     this.setState ( {statusMenuLoad: 1});
-    fetchPlaces(Object.keys(this.state.categories))
-      .then( (places) => {
-        const locations = venuesArrToObj(places);
-        this.setState( { locations: locations, statusMenuLoad: 0 });
+
+    auxFunc.fetchPlaces(Object.keys(this.state.categories))
+      .then( arrPlaces => auxFunc.venuesArrToObj(arrPlaces) )
+      .then( objPlaces => {
+        auxFunc.getGoogleAddresses(objPlaces)
+          .then( addresses => auxFunc.addAddresses(addresses, objPlaces))
+          .then( locations => this.setState( { locations: locations,
+                                              statusMenuLoad: 0 })
+          )
       })
       .catch( (err) => {
         this.setState( {statusMenuLoad: 2})
-      });
+      }); 
   }
 
   render() {

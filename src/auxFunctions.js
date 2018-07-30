@@ -33,6 +33,47 @@ export function fetchPlaces(categoryIDs) {
 
 }
 
+export function getGoogleAddresses(venuesObj) {
+  return new Promise((res, rej) => {
+    Promise.all(Object.keys(venuesObj).map( (venue) => {
+
+      return fetch(`${constants.googleAPIUrlGC}` +
+                    `latlng=${venuesObj[venue].lat},${venuesObj[venue].lng}` +
+                    `&key=${constants.googleAPIKey}`)
+
+              .then( response => response.json())
+
+              .then( (json) => {
+                let venueAddress = {};
+                venueAddress[venue] = {
+                  address: json.results[0].formatted_address
+                }  
+                return venueAddress;
+              })
+
+              .catch( (err) => {
+                console.log('Google API failed:' + err);
+              })
+    }))
+    .then( addresses => { 
+      let venuesObjWithAddr = {};
+      for(let item of addresses) {
+        Object.assign(venuesObjWithAddr, item);
+      }
+      res(venuesObjWithAddr);
+    })
+    .catch( err => rej(err))
+  })
+
+}
+
+export function addAddresses(addresses, venuesObj) {
+  for(let id in venuesObj) {
+    venuesObj[id].address = addresses[id].address;
+  }
+  return venuesObj;
+}
+
 export function venuesArrToObj(venuesArray) {
   // returns fetched FourSquare data array to object 
 
@@ -42,9 +83,6 @@ export function venuesArrToObj(venuesArray) {
     try {
       venuesObj[venue.id] = {
         name: venue.name,
-        address: venue.location.address,
-        city: venue.location.city,
-        country: venue.location.country,
         lat: venue.location.lat,
         lng: venue.location.lng,
         categoryId: venue.categories[0].id
