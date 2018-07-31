@@ -7,7 +7,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.locationsWithMarkers;
+    this.extendedLocations;
     this.googleMap;
     
   }
@@ -72,18 +72,29 @@ class Map extends Component {
     }
   }
 
+  initInfoWindows = (locations) => {
+    for(let locationId in locations) {
+      let currentLocation = locations[locationId];
+      let currentInfoWin = new google.maps.InfoWindow({
+        content: `<div style="color: black">${currentLocation.address}</div>`
+      });
+      locations[locationId].googleInfoWin = currentInfoWin;
+    }
+    return locations;
+  }
+
   shouldComponentUpdate(nextProps) {
-    // This method is used to detect props changes and call Google API accordingly, but always returns false because API takes care of map rendering, not React.
 
     if(this.props.locations !== nextProps.locations) {
-      this.locationsWithMarkers = this.initMarkers(nextProps.locations);
+      this.extendedLocations = this.initMarkers(nextProps.locations);
+      this.extendedLocations = this.initInfoWindows(nextProps.locations);
     }
 
     if(this.props.filteredLocations !== nextProps.filteredLocations) {
-      if(this.locationsWithMarkers) {
-        this.clearAllMarkers(this.locationsWithMarkers);
+      if(this.extendedLocations) {
+        this.clearAllMarkers(this.extendedLocations);
         this.addFilteredMarkers(
-            this.locationsWithMarkers, 
+            this.extendedLocations, 
             nextProps.filteredLocations,
             this.googleMap
           );
@@ -91,15 +102,19 @@ class Map extends Component {
     }
 
     if(this.props.previousLocation !== nextProps.previousLocation) {
-      this.locationsWithMarkers[nextProps.previousLocation].googleMapMarker
-      .setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+      let previousLocation = this.extendedLocations[nextProps.previousLocation];
+      previousLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+      previousLocation.googleInfoWin.close();
+
     }
 
     if(this.props.currentLocation !== nextProps.currentLocation) {
-      this.locationsWithMarkers[nextProps.currentLocation].googleMapMarker
-      .setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      let currentLocation = this.extendedLocations[nextProps.currentLocation];
+      currentLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      currentLocation.googleInfoWin.open(this.googleMap, currentLocation.googleMapMarker);
     }
 
+    // This method is used to detect props changes and call Google API accordingly, but always returns false because API takes care of map rendering, not React.
     return false;
   }
 
