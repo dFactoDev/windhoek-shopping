@@ -83,6 +83,12 @@ class Map extends Component {
     return locations;
   }
 
+  clearAllInfoWin = (locationsWithInfoWin) => {
+    for(let key of Object.keys(locationsWithInfoWin)) {
+      locationsWithInfoWin[key].googleInfoWin.close();
+    }
+  }
+
   shouldComponentUpdate(nextProps) {
 
     if(this.props.locations !== nextProps.locations) {
@@ -92,6 +98,7 @@ class Map extends Component {
 
     if(this.props.filteredLocations !== nextProps.filteredLocations) {
       if(this.extendedLocations) {
+        this.clearAllInfoWin(this.extendedLocations);
         this.clearAllMarkers(this.extendedLocations);
         this.addFilteredMarkers(
             this.extendedLocations, 
@@ -101,14 +108,15 @@ class Map extends Component {
       }
     }
 
-    if(this.props.previousLocation !== nextProps.previousLocation) {
-      let previousLocation = this.extendedLocations[nextProps.previousLocation];
-      previousLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-      previousLocation.googleInfoWin.close();
-
-    }
-
     if(this.props.currentLocation !== nextProps.currentLocation) {
+      
+      if(nextProps.previousLocation) {
+        let previousLocation = 
+        this.extendedLocations[nextProps.previousLocation];
+        previousLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+        previousLocation.googleInfoWin.close();
+      }
+      
       let currentLocation = this.extendedLocations[nextProps.currentLocation];
       currentLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
       currentLocation.googleInfoWin.open(this.googleMap, currentLocation.googleMapMarker);
