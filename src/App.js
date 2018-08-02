@@ -75,14 +75,23 @@ class App extends Component {
       .then( objPlaces => {
         auxFunc.getGoogleAddresses(objPlaces)
           .then( addresses => auxFunc.addAddresses(addresses, objPlaces))
-          .then( locations => this.setState( { locations: locations,
-                                              statusMenuLoad: 0 })
+          .then( objWithAddr => auxFunc.getFQDetails(objWithAddr)
+            .then( objWithdetails => 
+              auxFunc.addFQDetails(objWithdetails, objWithAddr)
+            )
+            .then( objWithAll =>
+              this.setState( { locations: objWithAll,
+              statusMenuLoad: 0 })
+            )
           )
+          .catch( err => this.setState( {statusMenuLoad: 2}))
       })
       .catch( (err) => {
         this.setState( {statusMenuLoad: 2})
       }); 
   }
+
+
 
   render() {
     return (

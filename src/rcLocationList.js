@@ -18,7 +18,8 @@ function LocationList({filteredLocations, currentLocation, changeLocation}) {
                 key={locationId} 
                 value={locationId}
                 className={className}
-                onClick={() => changeLocation(locationId) }>
+                onClick={() => changeLocation(locationId) }
+                onFocus={() => changeLocation(locationId) }>
                 {filteredLocations[locationId].name}
               </li>
             );

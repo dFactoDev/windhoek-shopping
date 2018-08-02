@@ -74,9 +74,18 @@ class Map extends Component {
 
   initInfoWindows = (locations) => {
     for(let locationId in locations) {
-      let currentLocation = locations[locationId];
+      let {name, address, website, rating, ratingCol} = locations[locationId];
       let currentInfoWin = new google.maps.InfoWindow({
-        content: `<div style="color: black">${currentLocation.address}</div>`
+        content: 
+          `<div class="infowindow">
+            <div class="infowindow__name">${name}</div>
+            <div class="infowindow__address">${address}
+            </div>
+            <div class="infowindow__rating" 
+              style="background-color: ${ratingCol}">${rating}
+            </div>
+            <a href=${website} target="_blank">More Info</a>
+          </div>`
       });
       locations[locationId].googleInfoWin = currentInfoWin;
     }

@@ -25,12 +25,69 @@ export function fetchPlaces(categoryIDs) {
   
   return new Promise((resolve, reject) => {
 
-    fetch(constants.fourSqrUrl + fourSqrURLParams.toString())
+    fetch(constants.fourSqrSearchUrl + fourSqrURLParams.toString())
     .then((response) => response.json())
     .then((json) => resolve(json.response.venues))
     .catch((err) => reject(err))
     });
 
+}
+
+export function getFQDetails(venuesObj) {
+
+  function fetchDetails(venueId) {
+    
+    let todayDate = new Date();
+
+    let url = `${constants.fourSqrDetailsUrl}/${venueId}?`+ 
+      `client_id=${constants.fourSqrID}` +
+      `&client_secret=${constants.fourSqrSecret}` +
+      `&v=${todayDate.getFullYear().toString()}1231`;
+  
+    return new Promise((resolve, reject) => {
+      fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        const {code, errorDetail} = json.meta;
+        if(code >= 400) reject(`API error ${code}: ${errorDetail}`);
+        resolve(json.response.venue)
+      })
+      .catch(err => reject(err))
+    });
+  }
+  
+  return new Promise((res, rej) => {
+    Promise.all(Object.keys(venuesObj).map( (venue) => {
+
+      return fetchDetails(venue)
+              .then( details => {
+                let venueDetails = {};
+                let {url, shortUrl, rating, ratingColor} = details;
+                venueDetails[venue] = {
+                  website: url ? url : shortUrl, 
+                  rating: rating ? rating : '', 
+                  ratingCol: ratingColor ? '#' + ratingColor : '#FFFFFF' 
+                }  
+                return venueDetails;
+              })
+              .catch( err => rej(err))
+    }))
+    .then( venueDetails => {
+      let venueObjWithDetails = {};
+      for(let item of venueDetails) {
+        Object.assign(venueObjWithDetails, item);
+      }
+      res(venueObjWithDetails);
+    })
+    .catch( err => rej(err))
+  })
+}
+
+export function addFQDetails(details, venuesObj) {
+  for(let id in venuesObj) {
+    Object.assign(venuesObj[id], details[id]);
+  }
+  return venuesObj;
 }
 
 export function getGoogleAddresses(venuesObj) {
@@ -69,7 +126,7 @@ export function getGoogleAddresses(venuesObj) {
 
 export function addAddresses(addresses, venuesObj) {
   for(let id in venuesObj) {
-    venuesObj[id].address = addresses[id].address;
+    Object.assign(venuesObj[id], addresses[id]);
   }
   return venuesObj;
 }
