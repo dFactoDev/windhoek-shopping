@@ -57,7 +57,7 @@ export function fetchPlaces(categoryIDs) {
 
 }
 
-export function getFQDetails(venuesObj) {
+export function addFQDetails(venuesObj) {
 
   function fetchDetails(venueId) {
     
@@ -101,20 +101,18 @@ export function getFQDetails(venuesObj) {
       for(let item of venueDetails) {
         Object.assign(venueObjWithDetails, item);
       }
-      res(venueObjWithDetails);
+
+      for(let id in venuesObj) {
+        Object.assign(venuesObj[id], venueObjWithDetails[id]);
+      }
+
+      res(venuesObj);
     })
     .catch( err => rej(err))
   })
 }
 
-export function addFQDetails(details, venuesObj) {
-  for(let id in venuesObj) {
-    Object.assign(venuesObj[id], details[id]);
-  }
-  return venuesObj;
-}
-
-export function getGoogleAddresses(venuesObj) {
+export function addGoogleAddresses(venuesObj) {
   return new Promise((res, rej) => {
     Promise.all(Object.keys(venuesObj).map( (venue) => {
 
@@ -141,19 +139,17 @@ export function getGoogleAddresses(venuesObj) {
       for(let item of addresses) {
         Object.assign(venuesObjWithAddr, item);
       }
-      res(venuesObjWithAddr);
+
+      for(let id in venuesObj) {
+        Object.assign(venuesObj[id], addresses[id]);
+      }
+      res(venuesObj);
     })
     .catch( err => rej(err))
   })
-
 }
 
-export function addAddresses(addresses, venuesObj) {
-  for(let id in venuesObj) {
-    Object.assign(venuesObj[id], addresses[id]);
-  }
-  return venuesObj;
-}
+
 
 
 

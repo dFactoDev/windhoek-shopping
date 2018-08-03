@@ -76,23 +76,15 @@ class App extends Component {
     let categories = Object.keys(this.state.categories);
 
     auxFunc.fetchPlaces(categories)
-      .then( places => {
-        auxFunc.getGoogleAddresses(places)
-          .then( addresses => auxFunc.addAddresses(addresses, places))
-          .then( objWithAddr => auxFunc.getFQDetails(objWithAddr)
-            .then( objWithdetails => 
-              auxFunc.addFQDetails(objWithdetails, objWithAddr)
-            )
-            .then( objWithAll =>
-              this.setState( { locations: objWithAll,
-              statusMenuLoad: 0 })
-            )
-          )
-          .catch( err => this.setState( {statusMenuLoad: 2}))
+      .then( places => auxFunc.addGoogleAddresses(places))
+      .then( placesWithAddr => auxFunc.addFQDetails(placesWithAddr))
+      .then( placesWithDetails => {
+          this.setState({ 
+            locations: placesWithDetails,
+            statusMenuLoad: 0 
+          })
       })
-      .catch( (err) => {
-        this.setState( {statusMenuLoad: 2})
-      }); 
+      .catch( err => this.setState( {statusMenuLoad: 2}))
   }
 
 
