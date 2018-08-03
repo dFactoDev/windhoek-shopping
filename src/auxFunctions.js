@@ -1,5 +1,29 @@
 import * as constants from './constants';
 
+function _venuesArrToObj(venuesArray) {
+  // returns fetched FourSquare data array to object 
+
+  let venuesObj = {};
+
+  for (let venue of venuesArray){
+    try {
+      venuesObj[venue.id] = {
+        name: venue.name,
+        lat: venue.location.lat,
+        lng: venue.location.lng,
+        categoryId: venue.categories[0].id
+      }
+    }
+    catch(err) {
+      // if exception due to incomplete info, ignore and continue
+      continue;
+    }
+  };
+
+  return venuesObj;
+}
+
+
 export function fetchPlaces(categoryIDs) {
 
   let todayDate = new Date();
@@ -27,7 +51,7 @@ export function fetchPlaces(categoryIDs) {
 
     fetch(constants.fourSqrSearchUrl + fourSqrURLParams.toString())
     .then((response) => response.json())
-    .then((json) => resolve(json.response.venues))
+    .then((json) => resolve(_venuesArrToObj(json.response.venues)))
     .catch((err) => reject(err))
     });
 
@@ -131,28 +155,6 @@ export function addAddresses(addresses, venuesObj) {
   return venuesObj;
 }
 
-export function venuesArrToObj(venuesArray) {
-  // returns fetched FourSquare data array to object 
-
-  let venuesObj = {};
-
-  for (let venue of venuesArray){
-    try {
-      venuesObj[venue.id] = {
-        name: venue.name,
-        lat: venue.location.lat,
-        lng: venue.location.lng,
-        categoryId: venue.categories[0].id
-      }
-    }
-    catch(err) {
-      // if exception due to incomplete info, ignore and continue
-      continue;
-    }
-  };
-
-  return venuesObj;
-}
 
 
 

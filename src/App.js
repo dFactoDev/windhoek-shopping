@@ -30,11 +30,13 @@ class App extends Component {
     }
   }
   
+  // Filters out locations which do not match passed in category
   filterLocations = (categoryId) => {
 
     let locations = this.state.locations;
     let filtered = {};
 
+    //if no category specified, return locations unfiltered.
     if(!categoryId || categoryId === '0') {
       filtered = Object.assign(filtered, locations);
     }
@@ -68,13 +70,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // set status to 'loading' to display on UI
     this.setState ( {statusMenuLoad: 1});
 
-    auxFunc.fetchPlaces(Object.keys(this.state.categories))
-      .then( arrPlaces => auxFunc.venuesArrToObj(arrPlaces) )
-      .then( objPlaces => {
-        auxFunc.getGoogleAddresses(objPlaces)
-          .then( addresses => auxFunc.addAddresses(addresses, objPlaces))
+    let categories = Object.keys(this.state.categories);
+
+    auxFunc.fetchPlaces(categories)
+      .then( places => {
+        auxFunc.getGoogleAddresses(places)
+          .then( addresses => auxFunc.addAddresses(addresses, places))
           .then( objWithAddr => auxFunc.getFQDetails(objWithAddr)
             .then( objWithdetails => 
               auxFunc.addFQDetails(objWithdetails, objWithAddr)
