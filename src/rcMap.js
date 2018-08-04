@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as constants from './constants';
+import * as Const from './constants';
 
 const google = window.google;
 
@@ -7,16 +7,17 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.extendedLocations;
+    // locations object will be extended with Google objects
+    this.extendedLocations; 
     this.googleMap;
     
   }
 
   initMap = () => {
     const map = new google.maps.Map(this.refs.map, {
-      center: {lat: constants.mapCenterLat, lng: constants.mapCenterLng},
-      zoom: constants.mapInitZoom,
-      mapTypeId: constants.mapType,
+      center: {lat: Const.mapCenterLat, lng: Const.mapCenterLng},
+      zoom: Const.mapInitZoom,
+      mapTypeId: Const.mapType,
       disableDefaultUI: true,
       zoomControl: true,
       scaleControl: true,
@@ -29,10 +30,14 @@ class Map extends Component {
         position: google.maps.ControlPosition.TOP_RIGHT
       },
       styles: [
-        {featureType: 'poi',
-        stylers: [{visibility: 'off'}]},
-        {featureType: 'transit',
-        stylers: [{visibility: 'off'}]}
+        {
+          featureType: 'poi',
+          stylers: [{visibility: 'off'}]
+        },
+        {
+          featureType: 'transit',
+          stylers: [{visibility: 'off'}]
+        }
       ]
 
     });
@@ -42,21 +47,22 @@ class Map extends Component {
   initMarkers = (locations) => {
     Object.keys(locations).forEach (
       (locationId) => {
-        let currentLocation = locations[locationId];
+        // create the marker for this location
+        let {lat, lng, name} = locations[locationId];
         let currentMarker = new google.maps.Marker({
-          position: { 
-            lat: currentLocation.lat,
-            lng: currentLocation.lng
-          },
-          title: currentLocation.name
+          position: {lat,lng},
+          title: name
         });
         currentMarker.addListener('click', () => {
           this.props.changeLocation(locationId);
         });
-        currentMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        
+        currentMarker.setIcon       ('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        // add the marker to this location's object
         locations[locationId].googleMapMarker = currentMarker;
       }
     );
+    // return the updated locations objected with all the markers
     return locations;
   }
 
@@ -67,14 +73,15 @@ class Map extends Component {
   }
 
   addFilteredMarkers(locationsWithMarkers, filteredLocations, map) {
-    for(let filterKey of Object.keys(filteredLocations)) {
-      locationsWithMarkers[filterKey].googleMapMarker.setMap(map);
+    for(let key of Object.keys(filteredLocations)) {
+      locationsWithMarkers[key].googleMapMarker.setMap(map);
     }
   }
 
   initInfoWindows = (locations) => {
-    for(let locationId in locations) {
-      let {name, address, website, rating, ratingCol} = locations[locationId];
+    for(let id in locations) {
+      let {name, address, website, rating, ratingCol} = locations[id];
+      // create the InfoWin for this locations
       let currentInfoWin = new google.maps.InfoWindow({
         content: 
           `<div class="infowindow">
@@ -87,8 +94,10 @@ class Map extends Component {
             <a href=${website} target="_blank">More Info</a>
           </div>`
       });
-      locations[locationId].googleInfoWin = currentInfoWin;
+      // add InfoWin to the location's object
+      locations[id].googleInfoWin = currentInfoWin;
     }
+    // return updated locations with the InfoWins added
     return locations;
   }
 
@@ -100,35 +109,48 @@ class Map extends Component {
 
   shouldComponentUpdate(nextProps) {
 
-    if(this.props.locations !== nextProps.locations) {
-      this.extendedLocations = this.initMarkers(nextProps.locations);
-      this.extendedLocations = this.initInfoWindows(nextProps.locations);
+    let { 
+          locations, 
+          filteredLocations, 
+          previousLocation, 
+          selectedLocation } = nextProps;
+
+    // when new locations received, extend with markers and info windows
+    if(this.props.locations !== locations) {
+      this.extendedLocations = this.initMarkers(locations);
+      this.extendedLocations = this.initInfoWindows(locations);
     }
 
-    if(this.props.filteredLocations !== nextProps.filteredLocations) {
+    // if filtered location list changed, clear previously opened markers and InfoWins and open the markers for the new list.
+    if(this.props.filteredLocations !== filteredLocations) {
       if(this.extendedLocations) {
         this.clearAllInfoWin(this.extendedLocations);
         this.clearAllMarkers(this.extendedLocations);
         this.addFilteredMarkers(
             this.extendedLocations, 
-            nextProps.filteredLocations,
+            filteredLocations,
             this.googleMap
           );
       }
     }
 
-    if(this.props.currentLocation !== nextProps.currentLocation) {
+    // if location selection has changed
+    if(this.props.selectedLocation !== selectedLocation) {
       
-      if(nextProps.previousLocation) {
-        let previousLocation = 
-        this.extendedLocations[nextProps.previousLocation];
-        previousLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-        previousLocation.googleInfoWin.close();
+      // if another location was selected before the new selection, reset marker color and close InfoWindow
+      if(previousLocation) {
+        let previousExtLocation = this.extendedLocations[previousLocation];
+        previousExtLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+        previousExtLocation.googleInfoWin.close();
       }
       
-      let currentLocation = this.extendedLocations[nextProps.currentLocation];
-      currentLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-      currentLocation.googleInfoWin.open(this.googleMap, currentLocation.googleMapMarker);
+      // change selected location's marker colour and open InfoWindow
+      let selectedExtLocation = this.extendedLocations[selectedLocation];
+      selectedExtLocation.googleMapMarker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+      selectedExtLocation.googleInfoWin.open(
+        this.googleMap, 
+        selectedExtLocation.googleMapMarker
+      );
     }
 
     // This method is used to detect props changes and call Google API accordingly, but always returns false because API takes care of map rendering, not React.

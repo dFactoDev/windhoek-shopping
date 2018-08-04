@@ -10,7 +10,7 @@ class CategoryFilter extends Component {
 
   }
 
-  categoryIDs = Object.getOwnPropertyNames(this.props.categories);
+  categoryIDs = Object.keys(this.props.categories);
   
   render () {
     return (
@@ -19,7 +19,7 @@ class CategoryFilter extends Component {
         onChange={(e) => {
           this.props.changeFilter(e.target.value);
         }}
-        value={this.props.currentFilter}>
+        value={this.props.selectedFilter}>
         <option key='0' value='0'>All</option>
         {
           this.categoryIDs.map(

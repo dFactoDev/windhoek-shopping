@@ -27,10 +27,10 @@ class Menu extends Component {
         <CategoryFilter 
           categories={this.props.categories} 
           changeFilter={this.props.changeFilter}
-          currentFilter={this.props.currentFilter}/> 
+          selectedFilter={this.props.selectedFilter}/> 
         <LocationList 
           filteredLocations={this.props.filteredLocations}
-          currentLocation={this.props.currentLocation}
+          selectedLocation={this.props.selectedLocation}
           changeLocation={this.props.changeLocation}/>
       </div>;
     

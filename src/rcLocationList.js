@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LocationList({filteredLocations, currentLocation, changeLocation}) {
+function LocationList({filteredLocations, selectedLocation, changeLocation}) {
   return (
     <ul className="locations">
       {
@@ -9,7 +9,7 @@ function LocationList({filteredLocations, currentLocation, changeLocation}) {
           (locationId) => {
 
             let className;
-            locationId === currentLocation 
+            locationId === selectedLocation 
             ? className = 'locations__item locations__item--selected'
             : className = 'locations__item'
 
