@@ -1,7 +1,7 @@
-import * as constants from './constants';
+import * as Const from './constants';
 
-function _venuesArrToObj(venuesArray) {
-  // returns fetched FourSquare data array to object 
+function _convertFQData(venuesArray) {
+  // returns fetched FourSquare data array to object with only required details.
 
   let venuesObj = {};
 
@@ -26,64 +26,62 @@ function _venuesArrToObj(venuesArray) {
 
 export function fetchPlaces(categoryIDs) {
 
-  let todayDate = new Date();
+  let todayDate = new Date(); 
+  let catString = categoryIDs.join(',');
 
-  let categoriesString = categoryIDs.join(',');
+  let query = 
+    Const.fourSqrSearchUrl + 
+    `&client_id=${Const.fourSqrID}` +
+    `&client_secret=${Const.fourSqrSecret}` +
+    `&ll=${Const.mapCenterLat},${Const.mapCenterLng}` +
+    `&intent=browse` +
+    `&radius=${Const.searchRadius}` +
+    `&limit=${Const.fourSqrLimit}` +
+    `&v=${todayDate.getFullYear().toString()}1231` +
+    `&categoryId=${catString}`;
 
-  let fourSqrParamsObj = {
-    client_id: constants.fourSqrID,
-    client_secret: constants.fourSqrSecret,
-    ll: constants.mapCenterLat + ',' + constants.mapCenterLng,
-    intent: 'browse',
-    radius: constants.searchRadius,
-    limit: constants.fourSqrLimit,
-    v: todayDate.getFullYear().toString() + '1231',
-    categoryId: categoriesString
-  };
-
-  const fourSqrURLParams = new URLSearchParams();
-
-  Object.entries(fourSqrParamsObj).map((param) => {
-    fourSqrURLParams.append(param[0], param[1]);
-  });
-  
   return new Promise((resolve, reject) => {
-
-    fetch(constants.fourSqrSearchUrl + fourSqrURLParams.toString())
+    fetch(query)
     .then((response) => response.json())
-    .then((json) => resolve(_venuesArrToObj(json.response.venues)))
+    .then((json) => resolve(_convertFQData(json.response.venues)))
     .catch((err) => reject(err))
     });
 
 }
 
-export function addFQDetails(venuesObj) {
-
-  function fetchDetails(venueId) {
+function _fetchFQDetails(venueId) {
     
-    let todayDate = new Date();
+  let todayDate = new Date();
 
-    let url = `${constants.fourSqrDetailsUrl}/${venueId}?`+ 
-      `client_id=${constants.fourSqrID}` +
-      `&client_secret=${constants.fourSqrSecret}` +
-      `&v=${todayDate.getFullYear().toString()}1231`;
-  
-    return new Promise((resolve, reject) => {
-      fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        const {code, errorDetail} = json.meta;
-        if(code >= 400) reject(`API error ${code}: ${errorDetail}`);
-        resolve(json.response.venue)
-      })
-      .catch(err => reject(err))
-    });
-  }
-  
-  return new Promise((res, rej) => {
-    Promise.all(Object.keys(venuesObj).map( (venue) => {
+  let url = 
+    `${Const.fourSqrDetailsUrl}/${venueId}?`+ 
+    `client_id=${Const.fourSqrID}` +
+    `&client_secret=${Const.fourSqrSecret}` +
+    `&v=${todayDate.getFullYear().toString()}1231`;
 
-      return fetchDetails(venue)
+  return new Promise((resolve, reject) => {
+    fetch(url)
+    .then(response => response.json())
+    .then(json => {
+      const {code, errorDetail} = json.meta;
+      code >= 400 
+        ? reject(`API error ${code}: ${errorDetail}`)
+        : resolve(json.response.venue);
+    })
+    .catch(err => reject(err))
+  });
+}
+
+export function addFQDetails(venuesObj) {
+  
+  return new Promise((resolve, reject) => {
+    
+    // get a promise for each venue to be queried
+    const promises = 
+      Object.keys(venuesObj).map( 
+        (venue) => {
+          return (
+            _fetchFQDetails(venue)
               .then( details => {
                 let venueDetails = {};
                 let {url, shortUrl, rating, ratingColor} = details;
@@ -94,58 +92,73 @@ export function addFQDetails(venuesObj) {
                 }  
                 return venueDetails;
               })
-              .catch( err => rej(err))
-    }))
+              .catch( err => reject(err))
+          )
+        }
+      )
+
+    // execute query for each venue
+    Promise.all(promises)
     .then( venueDetails => {
-      let venueObjWithDetails = {};
+      //add each venue's details object to one object
+      let venuesWithDetails = {};
       for(let item of venueDetails) {
-        Object.assign(venueObjWithDetails, item);
+        Object.assign(venuesWithDetails, item);
       }
-
+      //add the details of each venue to the original venues object
       for(let id in venuesObj) {
-        Object.assign(venuesObj[id], venueObjWithDetails[id]);
+        Object.assign(venuesObj[id], venuesWithDetails[id]);
       }
-
-      res(venuesObj);
+      //return the amended oject with all venues and their details
+      resolve(venuesObj);
     })
-    .catch( err => rej(err))
+    .catch( err => reject(err))
   })
 }
 
 export function addGoogleAddresses(venuesObj) {
-  return new Promise((res, rej) => {
-    Promise.all(Object.keys(venuesObj).map( (venue) => {
+  return new Promise((resolve, reject) => {
 
-      return fetch(`${constants.googleAPIUrlGC}` +
-                    `latlng=${venuesObj[venue].lat},${venuesObj[venue].lng}` +
-                    `&key=${constants.googleAPIKey}`)
-
-              .then( response => response.json())
-
-              .then( (json) => {
-                let venueAddress = {};
-                venueAddress[venue] = {
-                  address: json.results[0].formatted_address
-                }  
-                return venueAddress;
-              })
-
-              .catch( (err) => {
-                console.log('Google API failed:' + err);
-              })
-    }))
+    // a promise for each venue to be queried
+    const promises = 
+      Object.keys(venuesObj).map( 
+        (venue) => {
+          let query = 
+            `${Const.googleAPIUrlGC}` +
+            `latlng=${venuesObj[venue].lat},${venuesObj[venue].lng}` +
+            `&key=${Const.googleAPIKey}`
+          return fetch(query)
+                  .then( response => response.json())
+                  .then( (json) => {
+                    let venueAddress = {};
+                    venueAddress[venue] = {
+                      address: json.results[0].formatted_address
+                    }  
+                    return venueAddress;
+                  })
+                  .catch( (err) => {
+                    console.log('Google API failed:' + err);
+                    reject(err);
+                  })
+        }
+      )
+    
+    // run the query for each venue
+    Promise.all(promises)
     .then( addresses => { 
-      let venuesObjWithAddr = {};
+      // add the addresses of each venue to an object
+      let venuesWithAddr = {};
       for(let item of addresses) {
-        Object.assign(venuesObjWithAddr, item);
+        Object.assign(venuesWithAddr, item);
       }
-
+      // add the addresses to the original venues object
       for(let id in venuesObj) {
         Object.assign(venuesObj[id], addresses[id]);
       }
-      res(venuesObj);
+      // return ammended object containing addresses
+      resolve(venuesObj);
     })
-    .catch( err => rej(err))
+    .catch( err => reject(err))
   })
 }
 
