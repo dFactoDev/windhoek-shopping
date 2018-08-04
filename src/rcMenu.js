@@ -36,7 +36,7 @@ class Menu extends Component {
     
     if (this.state.isClosed) {
       return (
-        <div>
+        <div className="menu menu--close">
           <span
             title="toggle menu"
             role="button"

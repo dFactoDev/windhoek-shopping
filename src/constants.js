@@ -6,6 +6,7 @@ export const fourSqrLimit = "2";
 export const fourSqrSearchUrl = "https://api.foursquare.com/v2/venues/search?";
 export const fourSqrDetailsUrl = "https://api.foursquare.com/v2/venues"
 export const searchRadius = "4000";
+export const fourSqrFailSafe = true;
 
 // Map 
 export const mapCenterLat = -22.588409;

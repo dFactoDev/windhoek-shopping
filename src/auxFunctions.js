@@ -65,7 +65,7 @@ function _fetchFQDetails(venueId) {
     .then(json => {
       const {code, errorDetail} = json.meta;
       code >= 400 
-        ? reject(`API error ${code}: ${errorDetail}`)
+        ? reject(`Foursquare API error ${code}: ${errorDetail}`)
         : resolve(json.response.venue);
     })
     .catch(err => reject(err))
@@ -86,13 +86,13 @@ export function addFQDetails(venuesObj) {
                 let venueDetails = {};
                 let {url, shortUrl, rating, ratingColor} = details;
                 venueDetails[venue] = {
-                  website: url ? url : shortUrl, 
-                  rating: rating ? rating : '', 
-                  ratingCol: ratingColor ? '#' + ratingColor : '#FFFFFF' 
+                  website: url || shortUrl, 
+                  rating: rating || '', 
+                  ratingCol: '#' + ratingColor || '#FFFFFF' 
                 }  
                 return venueDetails;
               })
-              .catch( err => reject(err))
+              .catch( err => { if(!Const.fourSqrFailSafe) reject(err) })
           )
         }
       )

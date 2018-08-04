@@ -14,7 +14,7 @@ class CategoryFilter extends Component {
   
   render () {
     return (
-      <label for="Categories">
+      <label htmlFor="Categories">
         <select 
           className="menu__selector" 
           onChange={(e) => {
