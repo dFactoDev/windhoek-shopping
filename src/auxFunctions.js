@@ -117,6 +117,7 @@ export function addFQDetails(venuesObj) {
 }
 
 export function addGoogleAddresses(venuesObj) {
+ 
   return new Promise((resolve, reject) => {
 
     // a promise for each venue to be queried
@@ -127,17 +128,22 @@ export function addGoogleAddresses(venuesObj) {
             `${Const.googleAPIUrlGC}` +
             `latlng=${venuesObj[venue].lat},${venuesObj[venue].lng}` +
             `&key=${Const.googleAPIKey}`
+
           return fetch(query)
                   .then( response => response.json())
                   .then( (json) => {
                     let venueAddress = {};
+                    let formatted_address;
+                    json.results[0]
+                      ? {formatted_address} = json.results[0]
+                      : formatted_address = '';
                     venueAddress[venue] = {
-                      address: json.results[0].formatted_address
+                      address: formatted_address
                     }  
                     return venueAddress;
                   })
                   .catch( (err) => {
-                    console.log('Google API failed:' + err);
+                    console.log('Google API failed: ' + err);
                     reject(err);
                   })
         }
@@ -145,20 +151,20 @@ export function addGoogleAddresses(venuesObj) {
     
     // run the query for each venue
     Promise.all(promises)
-    .then( addresses => { 
-      // add the addresses of each venue to an object
-      let venuesWithAddr = {};
-      for(let item of addresses) {
-        Object.assign(venuesWithAddr, item);
-      }
-      // add the addresses to the original venues object
-      for(let id in venuesObj) {
-        Object.assign(venuesObj[id], addresses[id]);
-      }
-      // return ammended object containing addresses
-      resolve(venuesObj);
-    })
-    .catch( err => reject(err))
+      .then( addresses => { 
+        // add the addresses of each venue to an object
+        let venuesWithAddr = {};
+        for(let item of addresses) {
+          Object.assign(venuesWithAddr, item);
+        }
+        // add the addresses to the original venues object
+        for(let id in venuesObj) {
+          Object.assign(venuesObj[id], venuesWithAddr[id]);
+        }
+        // return ammended object containing addresses
+        resolve(venuesObj);
+      })
+      .catch( err => reject(err))
   })
 }
 

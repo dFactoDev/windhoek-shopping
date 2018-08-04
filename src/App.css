@@ -1,3 +1,9 @@
+
+/* for tab debugging */
+*:focus {
+  border: solid white 5px;
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -7,6 +13,9 @@ html, body {
   font-family: 'Titillium Web', sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  color: rgb(255, 217, 0);
+}
 
 .content {
   height: calc(100% - 85px); 
@@ -14,15 +23,21 @@ html, body {
 }
 
 .header {
-  color: orange;
+  color: rgb(255, 217, 0);
   background-color: rgb(72, 72, 94);
   padding: 15px;
   text-align: center;
+  border-bottom: solid 1px;
+  border-bottom-color: rgb(153, 163, 154);
+}
+
+.header h1 {
+  margin: 0;
+  padding: 0;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 3px;
-  border-bottom: solid 1px;
-  border-bottom-color: rgb(153, 163, 154);
+  font-size: 1.2em;
 }
 
 .menu {
@@ -38,6 +53,7 @@ html, body {
               inset 0px -10px 10px 0 rgb(0,0,0,0.1);
   transition-duration: 0.3s;
   overflow-y: auto;
+  z-index: 1;
 }
 
 .menu--open {

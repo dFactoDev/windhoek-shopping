@@ -23,7 +23,7 @@ class Menu extends Component {
   render() {
     
     let menuContent = 
-      <div>
+      <div role='menu'>
         <CategoryFilter 
           categories={this.props.categories} 
           changeFilter={this.props.changeFilter}
@@ -36,8 +36,10 @@ class Menu extends Component {
     
     if (this.state.isClosed) {
       return (
-        <div className="menu menu--close">
+        <div>
           <span
+            title="toggle menu"
+            role="button"
             onClick={this.toggleMenu}
             className="menu__toggle fas fa-bars"
             >
@@ -61,6 +63,8 @@ class Menu extends Component {
       return (
         <div className="menu menu--open">
           <span
+            title="toggle menu"
+            role="button"
             onClick={this.toggleMenu}
             className="menu__toggle fas fa-caret-left"
             >

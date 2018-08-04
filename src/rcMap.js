@@ -163,7 +163,7 @@ class Map extends Component {
 
   render() {
     return (
-      <div className="map" ref="map">
+      <div className="map" ref="map" role="application">
         Loading map ...
       </div>
       

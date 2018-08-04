@@ -92,13 +92,6 @@ class App extends Component {
   render() {
     return (
       <div className="row">
-        <Map 
-          filteredLocations={this.state.filteredLocations}
-          locations={this.state.locations}
-          selectedLocation={this.state.selectedLocation}
-          previousLocation={this.state.previousLocation}
-          changeLocation={this.changeLocation}
-        />
         <Menu 
           categories={this.state.categories} 
           filteredLocations={this.state.filteredLocations}
@@ -106,6 +99,13 @@ class App extends Component {
           changeFilter={this.changeFilter}
           selectedFilter={this.state.selectedFilter}
           selectedLocation={this.state.selectedLocation}
+          changeLocation={this.changeLocation}
+        />
+        <Map 
+          filteredLocations={this.state.filteredLocations}
+          locations={this.state.locations}
+          selectedLocation={this.state.selectedLocation}
+          previousLocation={this.state.previousLocation}
           changeLocation={this.changeLocation}
         />
       </div>

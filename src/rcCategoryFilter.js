@@ -14,25 +14,27 @@ class CategoryFilter extends Component {
   
   render () {
     return (
-      <select 
-        className="menu__selector" 
-        onChange={(e) => {
-          this.props.changeFilter(e.target.value);
-        }}
-        value={this.props.selectedFilter}>
-        <option key='0' value='0'>All</option>
-        {
-          this.categoryIDs.map(
-            (id) => {
-              return (
-                <option key={id} value={id}>
-                  {this.props.categories[id]}
-                </option>
-              );
-            }
-          )
-        }
-      </select>
+      <label for="Categories">
+        <select 
+          className="menu__selector" 
+          onChange={(e) => {
+            this.props.changeFilter(e.target.value);
+          }}
+          value={this.props.selectedFilter}>
+          <option key='0' value='0'>All</option>
+          {
+            this.categoryIDs.map(
+              (id) => {
+                return (
+                  <option key={id} value={id}>
+                    {this.props.categories[id]}
+                  </option>
+                );
+              }
+            )
+          }
+        </select>
+      </label>
     )
   }
 }

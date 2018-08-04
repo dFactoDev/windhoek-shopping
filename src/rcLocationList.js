@@ -15,6 +15,7 @@ function LocationList({filteredLocations, selectedLocation, changeLocation}) {
 
             return (
               <li 
+                role="menuItem"
                 key={locationId} 
                 value={locationId}
                 className={className}
