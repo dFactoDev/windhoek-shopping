@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as Const from './constants';
 
-const google = window.google;
+let google; //global var to store Google API object once loaded
 
 class Map extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class Map extends Component {
 
     // locations object will be extended with Google objects
     this.extendedLocations = {}; 
-    this.googleMap;
+    this.googleMap = undefined;
     
   }
 
@@ -114,7 +114,8 @@ class Map extends Component {
           locations, 
           filteredLocations, 
           previousLocation, 
-          selectedLocation } = nextProps;
+          selectedLocation,
+          statusMapLoad } = nextProps;
 
     // when new locations received, extend with markers and info windows
     if(this.props.locations !== locations) {
@@ -154,18 +155,35 @@ class Map extends Component {
       );
     }
 
-    // This method is used to detect props changes and call Google API accordingly, but always returns false because API takes care of map rendering, not React.
-    return false;
-  }
-
-  componentDidMount() {
-    this.googleMap = this.initMap();
+    // This method is used to detect props changes and call Google API accordingly, but always returns false because API takes care of map rendering, not React - except if Map API not loaded, rerender to display error
+    if(statusMapLoad === 0) {
+      google = window.google;
+      this.googleMap = this.initMap();
+      return false;
+    } else {
+      return true;
+    }
   }
 
   render() {
+    
+    let mapContent;
+
+    switch(this.props.statusMapLoad) {
+      case 1: 
+        mapContent = <div> Loading map, please wait...</div>
+        break;
+      case 2:
+        mapContent = <div> Error loading map. Please refresh.</div>
+        break;
+      default:
+        mapContent = '';
+        break;
+    }
+
     return (
       <div className="map" ref="map" role="application">
-        Loading map ...
+        {mapContent}
       </div>
       
     );

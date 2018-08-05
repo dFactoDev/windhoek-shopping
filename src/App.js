@@ -23,7 +23,8 @@ class App extends Component {
       },
       locations: {},
       filteredLocations: {},
-      statusMenuLoad: 0,
+      statusMenuLoad: 1,
+      statusMapLoad: 1,
       selectedFilter: '',
       selectedLocation: '',
       previousLocation: ''
@@ -71,9 +72,13 @@ class App extends Component {
 
   componentDidMount() {
     // set status to 'loading' to display on UI
-    this.setState ( {statusMenuLoad: 1});
+    this.setState ( {statusMenuLoad: 1, statusMapLoad: 1});
 
     let categories = Object.keys(this.state.categories);
+
+    auxFunc.loadGoogleAPI()
+      .then( () => this.setState( {statusMapLoad: 0}))
+      .catch( err => this.setState( {statusMapLoad: 2}));
 
     auxFunc.fetchPlaces(categories)
       .then( places => auxFunc.addGoogleAddresses(places))
@@ -102,6 +107,7 @@ class App extends Component {
           changeLocation={this.changeLocation}
         />
         <Map 
+          statusMapLoad={this.state.statusMapLoad}
           filteredLocations={this.state.filteredLocations}
           locations={this.state.locations}
           selectedLocation={this.state.selectedLocation}

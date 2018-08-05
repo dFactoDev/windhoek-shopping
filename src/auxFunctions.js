@@ -116,6 +116,27 @@ export function addFQDetails(venuesObj) {
   })
 }
 
+export function loadGoogleAPI() {
+
+  // solution partly derived from https://stackoverflow.com/questions/48493960/using-google-map-in-react-component
+
+  return new Promise ((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = `${Const.googleAPIUrlMap}key=${Const.googleAPIKey}`;
+    script.type = 'text/javascript';
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', () => {
+      resolve();
+    });
+    script.addEventListener('error', () => {
+      reject();
+    });
+    document.body.appendChild(script);
+  });
+
+}
+
 export function addGoogleAddresses(venuesObj) {
  
   return new Promise((resolve, reject) => {
