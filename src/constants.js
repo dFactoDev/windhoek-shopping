@@ -2,7 +2,7 @@
 // FourSquare
 export const fourSqrID = "TVSFKD1EGP0KANAOVY40P3ZPMUYO1UQWKN0O1ZGMJY4S5B1Y";
 export const fourSqrSecret = "IMMLPSIPYJ1BVGQY555XLME1WFJ5DG1YXYRARR0E4CQS35PL";
-export const fourSqrLimit = "2";
+export const fourSqrLimit = "15";
 export const fourSqrSearchUrl = "https://api.foursquare.com/v2/venues/search?";
 export const fourSqrDetailsUrl = "https://api.foursquare.com/v2/venues"
 export const searchRadius = "4000";
