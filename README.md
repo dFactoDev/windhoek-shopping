@@ -9,7 +9,10 @@ Then start the server with:
 
 `npm start`
 
-The server runs on port 3000 by default and is accessible at `http://localhost:3000`
+The server runs the **development** environment on port 3000 by default and is accessible at `http://localhost:3000`
+Note that the **Service Worker** is not implemented in the development enviroment.
+
+The production site which includes optimized file sizes and the Service Worker is located under the `build` folder. You must serve the contents of this folder at the root `/` of your webserver.
 
 ## Usage
 A menu is available on the left which provides the list of shops.
