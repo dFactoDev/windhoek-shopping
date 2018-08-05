@@ -92,6 +92,7 @@ class Map extends Component {
               style="background-color: ${ratingCol}">${rating}
             </div>
             <a href=${website} target="_blank">More Info</a>
+            <div class="infowindow__attribution">Provided by Google and Foursquare</div>
           </div>`
       });
       // add InfoWin to the location's object
