@@ -8,7 +8,7 @@ class Map extends Component {
     super(props);
 
     // locations object will be extended with Google objects
-    this.extendedLocations; 
+    this.extendedLocations = {}; 
     this.googleMap;
     
   }
